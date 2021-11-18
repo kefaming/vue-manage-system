@@ -84,7 +84,6 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import {modifyData, fetchData, removeData} from "../api/index";
-import request from "../utils/request";
 
 export default {
     name: "basetable",
@@ -108,8 +107,11 @@ export default {
 
         // 查询操作
         const handleSearch = () => {
+            // var JSONzfc2 = JSON.stringify(query);
+            // console.log(JSONzfc2);
+            // alert(JSONzfc2);
             query.pageIndex = 1;
-            getData();
+            getData(query);
         };
 
         // 分页导航
@@ -156,29 +158,20 @@ export default {
             editVisible.value = true;
         };
 
+        // 修改提交
         const saveEdit = () => {
-            // alert("hi");
-            console.log(form);
-            // editData(query).then((res) => {
-            //     tableData.value = res.list;
-            //     pageTotal.value = res.pageTotal || 50;
-            // });
-
-            // let formData = JSON.stringify(form);
-            // alert(formData)
-
-            // alert(form.id);
             modifyData(form).then((res) => {
-                ElMessage.success("修改成功");
+                if(res.status == 0) {
+                    ElMessage.success("修改成功");
+                    editVisible.value = false;
+                    getData();
+                }
             });
-
-
-
-            editVisible.value = false;
-            ElMessage.success(`修改第 ${idx + 1} 行成功`);
-            Object.keys(form).forEach((item) => {
-                tableData.value[idx][item] = form[item];
-            });
+            // editVisible.value = false;
+            // ElMessage.success(`修改第 ${idx + 1} 行成功`);
+            // Object.keys(form).forEach((item) => {
+            //     tableData.value[idx][item] = form[item];
+            // });
         };
 
         return {

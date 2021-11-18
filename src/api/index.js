@@ -1,11 +1,10 @@
 import request from '../utils/request';
-import service from "../utils/request";
 
 export const fetchData = query => {
     return request({
         // url: './table.json',
         url: '/selectList',
-        method: 'get',
+        method: 'post',
         params: query
     });
 };
